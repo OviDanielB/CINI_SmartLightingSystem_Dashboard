@@ -1,0 +1,22 @@
+#STATISTICS
+
+{"id":456,"street":"Via Maggio","consumption":92,
+"timestamp":{"date":{"year":2017,"month":4,"day":12},
+"time":{"hour":15,"minute":33,"second":0,"nano":0}},"window_length":3600}
+
+
+{"street":"Piazza Risorgimento","consumption":25.42,
+"timestamp":{"date":{"year":2017,"month":4,"day":12},"time":{"hour":15,"minute":33,"second":0,"nano":0}},
+"window_length":3600}
+
+
+{"street":"*","consumption":0.07858789,
+"timestamp":{"date":{"year":2017,"month":4,"day":12},"time":{"hour":16,"minute":10,"second":0,"nano":0}},
+"window_length":3600}
+
+
+#RANKING
+
+{"ranking":[{"id":877,"address":
+{"name":"VIA del POLITECNICO","number":88719,"numberType":"CIVIC"},"lifetime":{"date":{"year":2017,"month":2,"day":12},
+"time":{"hour":20,"minute":24,"second":43,"nano":519000000}},"timestamp":1493749483524}],"count":2}

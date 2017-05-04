@@ -1,0 +1,295 @@
+<div class="animated fadeIn">
+
+    <!--<div class="row">
+        <div class="col-sm-6 col-lg-5" ng-controller="logoBubbleCtrl">
+            <canvas id="base" class="chart-bubble" chart-data="data"
+                    chart-series="series" chart-options="options" >
+            </canvas>
+        </div>
+
+    </div> -->
+
+    <div class="row">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-inverse card-primary" ng-controller="cardChartCtrl1">
+                <div class="card-block pb-0">
+
+                    <h4 class="mb-0"> {{total}} </h4>
+                    <p>Total Lamps</p>
+                </div>
+                <div class="chart-wrapper px-1" style="height:70px;">
+                    <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="false" chart-series="series" chart-options="options" chart-colors="colors" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-inverse card-success" ng-controller="cardChartCtrl2">
+                <div class="card-block pb-0">
+                    <h4 class="mb-0">{{workingLamps}}</h4>
+                    <p>Working Lamps</p>
+                </div>
+                <div class="chart-wrapper px-1" style="height:70px;">
+                    <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="false" chart-series="series" chart-options="options" chart-colors="colors" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-inverse card-warning" ng-controller="cardChartCtrl3">
+                <div class="card-block pb-0">
+                    <h4 class="mb-0">{{anomalyLamps}}</h4>
+                    <p>Anomaly Lamps</p>
+                </div>
+                <div class="chart-wrapper" style="height:70px;">
+                    <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="false" chart-series="series" chart-options="options" chart-colors="colors" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-inverse card-danger" ng-controller="cardChartCtrl4">
+                <div class="card-block pb-0">
+                    <h4 class="mb-0">{{totalStreets}}</h4>
+                    <p>Total Streets</p>
+                </div>
+                <div class="chart-wrapper px-1" style="height:70px;">
+                    <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" chart-options="options" chart-colors="colors" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+
+    <div class="card" ng-controller="MinConsumptionCtrl">
+        <div class="card-block">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">Global City Consumption</h4>
+                    <div class="small text-muted">Latest Hour Values</div>
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="chart-wrapper" style="height:300px; ">
+                <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="true"
+                        chart-series="series" chart-click="onClick" chart-options="options" chart-colors="colors" height="300"
+                ></canvas>
+            </div>
+        </div>
+
+    </div>
+    <!--/.card-->
+
+    <div class="animated fadeIn">
+        <div class="card-columns cols-2">
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-graph icon-bg"></i>Last Day Consumption Average
+                </div>
+                <div class="card-block" ng-controller="HourConsumptionCtrl">
+                    <canvas id="line" class="chart chart-line" chart-data="data" chart-colors="colors"
+                            chart-labels="labels" chart-legend="true" chart-options="options" chart-series="series" chart-click="onClick"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-graph icon-bg"></i>Last Week Consumption Average
+                </div>
+                <div class="card-block" ng-controller="DayConsumptionCtrl">
+                    <canvas id="bar" class="chart chart-line" chart-data="data" chart-options="options" chart-colors="colors" chart-labels="labels">
+                    </canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Anomaly Types
+                </div>
+                <div class="card-block" ng-controller="RadarCtrl">
+                    <canvas id="radar" class="chart chart-radar" chart-data="data" chart-labels="labels" chart-options="options" chart-colors="colors">
+                    </canvas>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row" ng-controller="lampRankingCtrl">
+
+        <h4>LAMP LIFETIME RANKING</h4>
+
+        <div class="card" ng-repeat="l in lamps">
+            <div class="card-block">
+                <div class="h1 text-muted text-right mb-2">
+                    <i class="icon-speedometer"></i>
+                </div>
+                <div class="h4 mb-0">{{lamps.indexOf(l) + 1}}</div>
+                <small class="text-muted text-uppercase font-weight-bold">ID: {{l.id }}, {{l.address.name}}  </small>
+                <div class="progress progress-xs mt-1 mb-0">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{l.id % 100}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" ng-controller="lampListCtrl">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <b>Street Lamps with Anomalies. Total Lamps : {{lamps.length}}</b>
+                </div>
+                <div class="card-block">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Lamp ID</th>
+                                <th>Address</th>
+                                <th>Lamp Model</th>
+                                <th>Anomalies</th>
+                                <th>Actual Light Intesity</th>
+                                <th>Actual Consumption</th>
+                                <th>Lifetime</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr ng-repeat="l in lamps">
+                                <td>{{ l.streetLamp.ID }}</td>
+                                <td>{{l.streetLamp.address.name + ' ' + l.streetLamp.address.number}}</td>
+                                <td>{{l.streetLamp.lampModel}}</td>
+                                <td>
+                                    <span ng-repeat="(k,v) in l.anomalies" class="badge badge-success">{{k}}</span>
+                                </td>
+                                <td>{{l.streetLamp.lightIntensity}}</td>
+                                <td>{{l.streetLamp.consumption}}</td>
+                                <td>{{l.streetLamp.lifetime.date.day + '/' + l.streetLamp.lifetime.date.month + '/'
+                                    + l.streetLamp.lifetime.date.year}}</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+
+    <div class="row" ng-controller="streetStatCtrl">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <b>Streets Consumption Statistics</b>
+                </div>
+                <div class="card-block">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Street Name</th>
+                            <th>Last Hour</th>
+                            <th>Last Day</th>
+                            <th>Last Week</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="l in streets">
+                            <td>{{ l.name }}</td>
+                            <td>{{l.hour}}</td>
+                            <td>{{l.day}}</td>
+                            <td>{{l.week}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+
+
+    <div class="row" ng-controller="lampStatCtrl">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <b>Street Lamps Consumption Statistics</b>
+                </div>
+                <div class="card-block">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Lamp ID</th>
+                            <th>Address</th>
+                            <th>Last Hour</th>
+                            <th>Last Day</th>
+                            <th>Last Week</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="l in lamps">
+                            <td>{{ l.id }}</td>
+                            <td>{{l.address}}</td>
+                            <td>{{l.hour}}</td>
+                            <td>{{l.day}}</td>
+                            <td>{{l.week}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+
+
+    <!-- <div class="row" ng-controller="lampRankingCtrl">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <b>Oldest Lamps Ranking </b>
+                </div>
+                <div class="card-block">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Lamp ID</th>
+                            <th>Address</th>
+                            <th>Anomalies</th>
+                            <th>Lifetime</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="l in lamps">
+                            <td>{{ l.streetLamp.ID }}</td>
+                            <td>{{l.streetLamp.address.name + ' ' + l.streetLamp.address.number}}</td>
+                            <td>{{l.streetLamp.lifetime.date.day + '/' + l.streetLamp.lifetime.date.month + '/'
+                                + l.streetLamp.lifetime.date.year}}</td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+
+
+    <!--/.row-->
+
+
