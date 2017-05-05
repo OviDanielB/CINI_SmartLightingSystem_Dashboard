@@ -1,17 +1,8 @@
 <div class="animated fadeIn">
 
-    <!--<div class="row">
-        <div class="col-sm-6 col-lg-5" ng-controller="logoBubbleCtrl">
-            <canvas id="base" class="chart-bubble" chart-data="data"
-                    chart-series="series" chart-options="options" >
-            </canvas>
-        </div>
-
-    </div> -->
-
     <div class="row">
         <div class="col-sm-6 col-lg-3">
-            <div class="card card-inverse card-primary" ng-controller="cardChartCtrl1">
+            <div class="card card-inverse card-primary" ng-controller="totalLampsCtrl">
                 <div class="card-block pb-0">
 
                     <h4 class="mb-0"> {{total}} </h4>
@@ -25,7 +16,7 @@
         <!--/.col-->
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card card-inverse card-success" ng-controller="cardChartCtrl2">
+            <div class="card card-inverse card-success" ng-controller="workingLampsCardCtrl">
                 <div class="card-block pb-0">
                     <h4 class="mb-0">{{workingLamps}}</h4>
                     <p>Working Lamps</p>
@@ -38,7 +29,7 @@
         <!--/.col-->
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card card-inverse card-warning" ng-controller="cardChartCtrl3">
+            <div class="card card-inverse card-warning" ng-controller="anomalyLampsCardCtrl">
                 <div class="card-block pb-0">
                     <h4 class="mb-0">{{anomalyLamps}}</h4>
                     <p>Anomaly Lamps</p>
@@ -51,7 +42,7 @@
         <!--/.col-->
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card card-inverse card-danger" ng-controller="cardChartCtrl4">
+            <div class="card card-inverse card-danger" ng-controller="totalStreetsCardCtrl">
                 <div class="card-block pb-0">
                     <h4 class="mb-0">{{totalStreets}}</h4>
                     <p>Total Streets</p>
@@ -253,43 +244,7 @@
         <!--/.col-->
     </div>
 
-
-    <!-- <div class="row" ng-controller="lampRankingCtrl">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> <b>Oldest Lamps Ranking </b>
-                </div>
-                <div class="card-block">
-                    <table class="table table-bordered table-striped table-condensed">
-                        <thead>
-                        <tr>
-                            <th>Lamp ID</th>
-                            <th>Address</th>
-                            <th>Anomalies</th>
-                            <th>Lifetime</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr ng-repeat="l in lamps">
-                            <td>{{ l.streetLamp.ID }}</td>
-                            <td>{{l.streetLamp.address.name + ' ' + l.streetLamp.address.number}}</td>
-                            <td>{{l.streetLamp.lifetime.date.day + '/' + l.streetLamp.lifetime.date.month + '/'
-                                + l.streetLamp.lifetime.date.year}}</td>
-
-                        </tr>
-
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-        <!--/.col-->
-    </div>
-
-
+</div>
     <!--/.row-->
 
 

@@ -1,27 +1,28 @@
-//main.js
+/**
+ * map angular controllers,
+ * all of which make AJAX calls
+ * to nodeJS server for updated
+ * values
+ */
 angular
 .module('app')
-.controller('cardChartCtrl1', cardChartCtrl1)
-.controller('cardChartCtrl2', cardChartCtrl2)
-.controller('cardChartCtrl3', cardChartCtrl3)
-.controller('cardChartCtrl4', cardChartCtrl4)
+.controller('totalLampsCtrl', totalLampsCtrl)
+.controller('workingLampsCardCtrl', workingLampsCardCtrl)
+.controller('anomalyLampsCardCtrl', anomalyLampsCardCtrl)
+.controller('totalStreetsCardCtrl', totalStreetsCardCtrl)
 .controller('MinConsumptionCtrl', MinConsumptionCtrl)
-.controller('socialBoxCtrl', socialBoxCtrl)
-.controller('sparklineChartCtrl', sparklineChartCtrl)
-.controller('barChartCtrl', barChartCtrl)
-.controller('horizontalBarsCtrl', horizontalBarsCtrl)
-.controller('horizontalBarsType2Ctrl', horizontalBarsType2Ctrl)
-.controller('usersTableCtrl', usersTableCtrl)
 .controller('lampListCtrl',lampListCtrl)
     .controller('lampRankingCtrl',lampRankingCtrl)
     .controller('HourConsumptionCtrl', HourConsumptionCtrl)
     .controller('DayConsumptionCtrl', DayConsumptionCtrl)
     .controller('RadarCtrl', RadarCtrl)
-    .controller('logoBubbleCtrl',logoBubbleCtrl)
     .controller('lampStatCtrl',lampStatCtrl)
     .controller('streetStatCtrl',streetStatCtrl);
 
 
+/**
+ * controls street consumption statistics table
+ */
 streetStatCtrl.$inject = ['$scope','$http'];
 function streetStatCtrl($scope,$http) {
 
@@ -35,7 +36,7 @@ function streetStatCtrl($scope,$http) {
        });
 
        $scope.streets.push({
-           name: "Via cazzo",
+           name: "Test Street",
            hour: 60,
            day: 70,
            week: 90
@@ -45,7 +46,9 @@ function streetStatCtrl($scope,$http) {
     });
 }
 
-
+/**
+ * controls street consumption statistics table
+ */
 lampStatCtrl.$inject = ['$scope','$http'];
 function lampStatCtrl($scope,$http) {
 
@@ -59,7 +62,7 @@ function lampStatCtrl($scope,$http) {
 
         $scope.lamps.push({
             id:124,
-            address: "Via cazzo 69",
+            address: "Test Street, 69",
             hour: 80,
             day: 90,
             week: 70
@@ -70,56 +73,12 @@ function lampStatCtrl($scope,$http) {
 }
 
 
-
-logoBubbleCtrl.$inject = ['$scope','$http','$interval'];
-function logoBubbleCtrl($scope,$http,$interval) {
-
-    $scope.options = {
-        scales: {
-            xAxes: [{
-                display: false,
-                ticks: {
-                    max: 125,
-                    min: -125,
-                    stepSize: 10
-                }
-            }],
-            yAxes: [{
-                display: false,
-                ticks: {
-                    max: 125,
-                    min: -125,
-                    stepSize: 10
-                }
-            }]
-        }
-    };
-
-    createChart();
-    $interval(createChart, 2000);
-
-    function createChart () {
-        $scope.series = [];
-        $scope.data = [];
-        for (var i = 0; i < 50; i++) {
-            $scope.data.push([{
-                x: randomScalingFactor(),
-                y: randomScalingFactor(),
-                r: randomRadius()
-            }]);
-        }
-    }
-
-    function randomScalingFactor () {
-        return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-    }
-
-    function randomRadius () {
-        return Math.abs(randomScalingFactor()) / 4;
-    }
-}
-
-//convert Hex to RGBA
+/**
+ * convert Hex to RGBA
+ * @param hex
+ * @param opacity
+ * @returns {string|*}
+ */
 function convertHex(hex,opacity){
   hex = hex.replace('#','');
   r = parseInt(hex.substring(0,2), 16);
@@ -130,35 +89,51 @@ function convertHex(hex,opacity){
   return result;
 }
 
+/**
+ * controls lamps (with relative information
+ * like position, anomaly types and lamp model)
+ * table
+ */
 lampListCtrl.$inject = ['$scope','$http'];
 function lampListCtrl($scope, $http){
 
-  const l1 = {"anomalies":{"DAMAGED_BULB":1.0,"NOT_RESPONDING":0.0},"noResponseCount":0,"streetLamp":{"ID":78569,"on":false,"lampModel":"LED","address":{"name":"POLITECNICO","number":26828,"numberType":"CIVIC"},
-  "lightIntensity":58.848267,"consumption":58.94588,
-  "lifetime":{"date":{"year":2017,"month":1,"day":19},
-  "time":{"hour":15,"minute":33,"second":13,"nano":598000000}}},
-  "timestamp":1491917600000,"naturalLightLevel":76.880745};
-
-  const l2 = {"anomalies":{"DAMAGED_BULB":1.0,"NOT_RESPONDING":0.0},"noResponseCount":0,
-  "streetLamp":{"ID":2569,"on":false,"lampModel":"LED","address":{"name":"POLITECNICO","number":26828,"numberType":"CIVIC"},
-  "lightIntensity":58.848267,"consumption":58.94588,
-  "lifetime":{"date":{"year":2017,"month":1,"day":19},
-  "time":{"hour":15,"minute":33,"second":13,"nano":598000000}}},
-  "timestamp":1491917600000,"naturalLightLevel":76.880745};
-  //$scope.lamps = [l1, l2];
-
     $scope.lamps = [];
+
+    const testLamp = {
+        streetLamp : {
+            ID: 52342,
+            address: {
+                name: "Via Cambridge",
+                number: "56"
+            },
+            lampModel: "LED",
+            lightIntensity: "63",
+            consumption: "79,25",
+            lifetime: {
+                date: {
+                    day: "5",
+                    month: "5",
+                    year: "2017"
+                }
+            }
+        },
+        anomalies: {
+            NOT_RESPONDING: "1"
+        }
+    };
 
   $http.get('/api/lamps')
         .then(function(response){
-          //$scope.lamps = JSON.parse(response.data);
+
             var temp = response.data;
             $scope.lamps.length = 0; //empty array
+            if(temp.length === 0){
+                $scope.lamps.push(testLamp);
+            }
             temp.forEach(function (ele) {
                $scope.lamps.push(JSON.parse(ele));
                console.log(JSON.parse(ele));
             });
-          console.log(response.data);
 
         }, function(error) {
           console.log(error);
@@ -166,8 +141,11 @@ function lampListCtrl($scope, $http){
 
 }
 
-cardChartCtrl1.$inject = ['$scope','$http'];
-function cardChartCtrl1($scope,$http) {
+/**
+ * controls card with total lamps count
+ */
+totalLampsCtrl.$inject = ['$scope','$http'];
+function totalLampsCtrl($scope, $http) {
 
     $scope.total = 1000;
     $scope.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
@@ -176,9 +154,7 @@ function cardChartCtrl1($scope,$http) {
     ];
 
     $http.get('/api/totalLamps').then(function (resp) {
-        //success
         $scope.total = Number(resp.data);
-        console.log("TOTAL : " + resp.data);
     }, function (error) {
         console.log(error);
     });
@@ -223,8 +199,11 @@ $scope.colors = [{
   }
 }
 
-cardChartCtrl2.$inject = ['$scope','$http'];
-function cardChartCtrl2($scope,$http) {
+/**
+ * controls card with working lamps count
+ */
+workingLampsCardCtrl.$inject = ['$scope','$http'];
+function workingLampsCardCtrl($scope, $http) {
 
   $scope.workingLamps = 1000; // updated from server
 
@@ -282,10 +261,13 @@ function cardChartCtrl2($scope,$http) {
   }
 }
 
-cardChartCtrl3.$inject = ['$scope','$http'];
-function cardChartCtrl3($scope,$http) {
+/**
+ * controls card with anomaly lamps count
+ */
+anomalyLampsCardCtrl.$inject = ['$scope','$http'];
+function anomalyLampsCardCtrl($scope, $http) {
 
-  $scope.anomalyLamps = 1000; // updated from server
+  $scope.anomalyLamps = 1000;
 
   $scope.labels = ['January','February','March','April','May','June','July'];
   $scope.data = [
@@ -333,13 +315,16 @@ function random(min,max) {
   return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-cardChartCtrl4.$inject = ['$scope','$http'];
-function cardChartCtrl4($scope,$http) {
+/**
+ * controls card with total streets count
+ */
+totalStreetsCardCtrl.$inject = ['$scope','$http'];
+function totalStreetsCardCtrl($scope, $http) {
 
   var elements = 16;
   var labels = [];
   var data = [];
-  //
+
   for (var i = 2000; i <= 2000 + elements; i++) {
     labels.push(i);
     data.push(random(40,100));
@@ -348,7 +333,7 @@ function cardChartCtrl4($scope,$http) {
   $scope.labels = labels;
 
   $scope.data = [data];
-  $scope.totalStreets = 1000; //updated from server
+  $scope.totalStreets = 1000;
 
     $http.get('/api/totalStreets').then(function (response) {
         $scope.totalStreets = Number(response.data);
@@ -379,28 +364,26 @@ function getSum(total, num) {
     return total + Math.round(num);
 }
 
+
+/**
+ * controls chart with global consumption values
+ * from the latest hour (last 60 values)
+ * also calculates the mean of the latest values
+ * (red dashed line)
+ */
 MinConsumptionCtrl.$inject = ['$scope','$http'];
 function MinConsumptionCtrl($scope, $http){
 
-  function random(min,max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-  }
 
   $scope.series = ['Actual', 'Previous', 'Mean Actual'];
   var max = 250;
 
   $http.get('/api/globalStatMin').then(function (res) {
-      var received = res.data;
 
+      var received = res.data;
       var actualData = received.globalDataMin;
-      //var previousConsumption = [];
       var meanActual = [];
 
-
-      /*
-      actualData.forEach(function (ele) {
-         previousConsumption.push(ele / 3 * 2);
-      }); */
 
       var mean = actualData.reduce(getSum,0) / actualData.length;
       for(var i = 0; i < actualData.length; i++){
@@ -410,7 +393,6 @@ function MinConsumptionCtrl($scope, $http){
       max = actualData.max;
       $scope.data = [actualData, [], meanActual];
       $scope.labels = received.globalLabelsMin;
-
 
   }, function (error) {
      console.log(error);
@@ -471,6 +453,12 @@ function MinConsumptionCtrl($scope, $http){
 
 
 
+/**
+ * controls chart with global consumption values
+ * from the latest day (last 24 values)
+ * also calculates the mean of the latest values
+ * (red dashed line)
+ */
 HourConsumptionCtrl.$inject = ['$scope','$http'];
 function HourConsumptionCtrl($scope, $http) {
 
@@ -483,7 +471,6 @@ function HourConsumptionCtrl($scope, $http) {
         var received = response.data;
 
         var actualData = received.globalDataHour;
-        console.log("HOUR : " + actualData);
         var previousData = [];
         var meanActual = [];
 
@@ -493,7 +480,6 @@ function HourConsumptionCtrl($scope, $http) {
 
 
         var mean = actualData.reduce(getSum,0) / actualData.length;
-        console.log("HOUR MEAN " + mean);
         for(var i = 0; i < actualData.length; i++){
             meanActual.push(mean);
         }
@@ -543,6 +529,12 @@ function HourConsumptionCtrl($scope, $http) {
 
 }
 
+/**
+ * controls chart with global consumption values
+ * from the latest week (last 7 values)
+ * also calculates the mean of the latest values
+ * (red dashed line)
+ */
 DayConsumptionCtrl.$inject = ['$scope','$http'];
 function DayConsumptionCtrl($scope, $http) {
 
@@ -556,7 +548,6 @@ function DayConsumptionCtrl($scope, $http) {
         var received = response.data;
 
         var actualData = received.globalDataDay;
-        console.log("DAY : " + actualData);
         var previousData = [];
         var meanActual = [];
 
@@ -565,7 +556,6 @@ function DayConsumptionCtrl($scope, $http) {
         });
 
         var mean = actualData.reduce(getSum,0) / actualData.length;
-        console.log("HOUR MEAN " + mean);
         for(var i = 0; i < actualData.length; i++){
             meanActual.push(mean);
         }
@@ -614,6 +604,10 @@ function DayConsumptionCtrl($scope, $http) {
         }];
 }
 
+/**
+ * controls radar chart with information on the number of
+ * different anomalies types
+ */
 RadarCtrl.$inject = ['$scope'];
 function RadarCtrl($scope) {
     $scope.labels =['Weather Less', 'Not Responding', 'Damaged Bulb', 'Weather More', 'Light Intensity Less', 'Light Intensity More'];
@@ -631,20 +625,23 @@ function RadarCtrl($scope) {
 }
 
 
+/**
+ * controls oldest lamp bulb ranking
+ */
 lampRankingCtrl.$inject = ['$scope','$http'];
 function lampRankingCtrl($scope,$http) {
-    var lamps = [{ID:13122, Street: 'Via Politenico',Perc: 30},
-        {ID:321,Street: 'Via Cambridge',Perc : 80},
-        {ID:5432,Street: 'Via Cambridge',Perc : 60},
-        {ID:432,Street: 'Via Cambridge',Perc : 20}];
+    var lamps = [{id:13122, address: { name: 'Via Politenico'}},
+                 {id:321,address: { name: 'Via Cambridge'}},
+                 {id:5432,address: { name: 'Via Politenico'}},
+                 {id:432,address: { name: 'Via Cambridge'} }];
 
-    var oldestLampsCount;
-
-    $scope.lamps = lamps;
-    $scope.oldestLampsCount = oldestLampsCount;
+    $scope.lamps = [];
 
     $http.get("/api/ranking").then(function (res) {
-      $scope.lamps.length = 0;
+      if(res.data.length === 0){
+          $scope.lamps = lamps;
+          $scope.oldestLampsCount = lamps.length;
+      }
       res.data.ranking.forEach(function (ele) {
           $scope.lamps.push(ele);
       });
@@ -656,401 +653,4 @@ function lampRankingCtrl($scope,$http) {
 
 }
 
-dateRangeCtrl.$inject = ['$scope'];
-function dateRangeCtrl($scope) {
-  $scope.date = {
-    startDate: moment().subtract(5, 'days'),
-    endDate: moment()
-  };
-  $scope.opts = {
-    drops: 'down',
-    opens: 'left',
-    ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 days': [moment().subtract(7, 'days'), moment()],
-      'Last 30 days': [moment().subtract(30, 'days'), moment()],
-      'This month': [moment().startOf('month'), moment().endOf('month')]
-    }
-  };
 
-  //Watch for date changes
-  $scope.$watch('date', function(newDate) {
-    //console.log('New date set: ', newDate);
-  }, false);
-
-  function gd(year, month, day) {
-    return new Date(year, month - 1, day).getTime();
-  }
-}
-
-socialBoxCtrl.$inject = ['$scope'];
-function socialBoxCtrl($scope) {
-
-  $scope.labels = ['January','February','March','April','May','June','July'];
-  $scope.data1 = [
-    [65, 59, 84, 84, 51, 55, 40]
-  ];
-  $scope.data2 = [
-    [1, 13, 9, 17, 34, 41, 38]
-  ];
-  $scope.data3 = [
-    [78, 81, 80, 45, 34, 12, 40]
-  ];
-  $scope.data4 = [
-    [35, 23, 56, 22, 97, 23, 64]
-  ];
-  $scope.colors = [{
-    backgroundColor: 'rgba(255,255,255,.1)',
-    borderColor: 'rgba(255,255,255,.55)',
-    pointHoverBackgroundColor: '#fff'
-  }];
-  $scope.options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display:false,
-      }],
-      yAxes: [{
-        display:false,
-      }]
-    },
-    elements: {
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-  }
-}
-
-sparklineChartCtrl.$inject = ['$scope'];
-function sparklineChartCtrl($scope) {
-  $scope.labels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-  $scope.data1 = [
-    [65, 59, 84, 84, 51, 55, 40]
-  ];
-  $scope.data2 = [
-    [1, 13, 9, 17, 34, 41, 38]
-  ];
-  $scope.data3 = [
-    [78, 81, 80, 45, 34, 12, 40]
-  ];
-  $scope.data4 = [
-    [35, 23, 56, 22, 97, 23, 64]
-  ];
-  $scope.default = [{
-    backgroundColor: 'transparent',
-    borderColor: '#d1d4d7',
-  }];
-  $scope.primary = [{
-    backgroundColor: 'transparent',
-    borderColor: brandPrimary,
-  }];
-  $scope.info = [{
-    backgroundColor: 'transparent',
-    borderColor: brandInfo,
-  }];
-  $scope.danger = [{
-    backgroundColor: 'transparent',
-    borderColor: brandDanger,
-  }];
-  $scope.warning = [{
-    backgroundColor: 'transparent',
-    borderColor: brandWarning,
-  }];
-  $scope.success = [{
-    backgroundColor: 'transparent',
-    borderColor: brandSuccess,
-  }];
-  $scope.options = {
-    scales: {
-      xAxes: [{
-        display:false,
-      }],
-      yAxes: [{
-        display:false,
-      }]
-    },
-    elements: {
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-  }
-}
-
-horizontalBarsCtrl.$inject = ['$scope'];
-function horizontalBarsCtrl($scope) {
-
-  $scope.data = [
-    {
-      day: 'Monday',    new: 34, recurring: 78
-    },
-    {
-      day: 'Tuesday',   new: 56, recurring: 94
-    },
-    {
-      day: 'Wednesday', new: 12, recurring: 67
-    },
-    {
-      day: 'Thursday',  new: 43, recurring: 91
-    },
-    {
-      day: 'Friday',    new: 22, recurring: 73
-    },
-    {
-      day: 'Saturday',  new: 53, recurring: 82
-    },
-    {
-      day: 'Sunday',    new: 9,  recurring: 69
-    }
-  ];
-}
-
-horizontalBarsType2Ctrl.$inject = ['$scope'];
-function horizontalBarsType2Ctrl($scope) {
-
-  $scope.gender = [
-    {
-      title: 'Male',
-      icon: 'icon-user',
-      value: 43
-    },
-    {
-      title: 'Female',
-      icon: 'icon-user-female',
-      value: 37
-    },
-  ];
-
-  $scope.source = [
-    {
-      title: 'Organic Search',
-      icon: 'icon-globe',
-      value: 191235,
-      percent: 56
-    },
-    {
-      title: 'Facebook',
-      icon: 'icon-social-facebook',
-      value: 51223,
-      percent: 15
-    },
-    {
-      title: 'Twitter',
-      icon: 'icon-social-twitter',
-      value: 37564,
-      percent: 11
-    },
-    {
-      title: 'LinkedIn',
-      icon: 'icon-social-linkedin',
-      value: 27319,
-      percent: 8
-    }
-  ];
-}
-
-usersTableCtrl.$inject = ['$scope', '$timeout'];
-function usersTableCtrl($scope, $timeout) {
-
-  $scope.users = [
-    {
-      avatar: '1.jpg',
-      status: 'active',
-      name: 'Yiorgos Avraamu',
-      new: true,
-      registered: 'Jan 1, 2015',
-      country: 'USA',
-      flag: 'USA.png',
-      usage: '50',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'mastercard',
-      activity: '10 sec ago',
-      satisfaction: '48'
-    },
-    {
-      avatar: '2.jpg',
-      status: 'busy',
-      name: 'Avram Tarasios',
-      new: false,
-      registered: 'Jan 1, 2015',
-      country: 'Brazil',
-      flag: 'Brazil.png',
-      usage: '10',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'visa',
-      activity: '5 minutes ago',
-      satisfaction: '61'
-    },
-    {
-      avatar: '3.jpg',
-      status: 'away',
-      name: 'Quintin Ed',
-      new: true,
-      registered: 'Jan 1, 2015',
-      country: 'India',
-      flag: 'India.png',
-      usage: '74',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'stripe',
-      activity: '1 hour ago',
-      satisfaction: '33'
-    },
-    {
-      avatar: '4.jpg',
-      status: 'offline',
-      name: 'Enéas Kwadwo',
-      new: true,
-      registered: 'Jan 1, 2015',
-      country: 'France',
-      flag: 'France.png',
-      usage: '98',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'paypal',
-      activity: 'Last month',
-      satisfaction: '23'
-    },
-    {
-      avatar: '5.jpg',
-      status: 'active',
-      name: 'Agapetus Tadeáš',
-      new: true,
-      registered: 'Jan 1, 2015',
-      country: 'Spain',
-      flag: 'Spain.png',
-      usage: '22',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'google',
-      activity: 'Last week',
-      satisfaction: '78'
-    },
-    {
-      avatar: '6.jpg',
-      status: 'busy',
-      name: 'Friderik Dávid',
-      new: true,
-      registered: 'Jan 1, 2015',
-      country: 'Poland',
-      flag: 'Poland.png',
-      usage: '43',
-      period: 'Jun 11, 2015 - Jul 10, 2015',
-      payment: 'amex',
-      activity: 'Yesterday',
-      satisfaction: '11'
-    }
-  ]
-}
-
-clientsTableCtrl.$inject = ['$scope', '$timeout'];
-function clientsTableCtrl($scope, $timeout) {
-
-  $scope.users = [
-    {
-      avatar: '1.jpg',
-      status: 'active',
-      name: 'Yiorgos Avraamu',
-      registered: 'Jan 1, 2015',
-      activity: '10 sec ago',
-      transactions: 189,
-      comments: 72
-    },
-    {
-      avatar: '2.jpg',
-      status: 'busy',
-      name: 'Avram Tarasios',
-      registered: 'Jan 1, 2015',
-      activity: '5 minutes ago',
-      transactions: 156,
-      comments: 76
-    },
-    {
-      avatar: '3.jpg',
-      status: 'away',
-      name: 'Quintin Ed',
-      registered: 'Jan 1, 2015',
-      activity: '1 hour ago',
-      transactions: 189,
-      comments: 72
-    },
-    {
-      avatar: '4.jpg',
-      status: 'offline',
-      name: 'Enéas Kwadwo',
-      registered: 'Jan 1, 2015',
-      activity: 'Last month',
-      transactions: 189,
-      comments: 72
-    },
-    {
-      avatar: '5.jpg',
-      status: 'active',
-      name: 'Agapetus Tadeáš',
-      registered: 'Jan 1, 2015',
-      activity: 'Last week',
-      transactions: 189,
-      comments: 72
-    },
-    {
-      avatar: '6.jpg',
-      status: 'busy',
-      name: 'Friderik Dávid',
-      registered: 'Jan 1, 2015',
-      activity: 'Yesterday',
-      transactions: 189,
-      comments: 72
-    }
-  ]
-}
-
-function random(min,max) {
-  return Math.floor(Math.random()*(max-min+1)+min);
-}
-
-barChartCtrl.$inject = ['$scope'];
-function barChartCtrl($scope) {
-
-  var elements = 16;
-  var labels = [];
-  var data = [];
-  var data1 = [];
-  var data2 = [];
-
-  for (var i = 0; i <= elements; i++) {
-    labels.push('1');
-    data.push(random(40,100));
-    data1.push(random(20,100));
-    data2.push(random(60,100));
-  }
-
-  $scope.labels = labels;
-
-  $scope.data = [data];
-  $scope.data1 = [data1];
-  $scope.data2 = [data2];
-
-  $scope.options = {
-    showScale: false,
-    scaleFontSize: 0,
-    scaleShowGridLines: false,
-    barStrokeWidth : 0,
-    barBackground: 'rgba(221, 224, 229, 1)',
-
-    // pointDot :false,
-    // scaleLineColor: 'transparent',
-  };
-
-  $scope.colors = [{
-    backgroundColor : brandInfo,
-    borderColor : 'rgba(0,0,0,1)',
-    highlightFill: '#818a91',
-    pointborderColor: '#000'
-  }];
-}

@@ -37,6 +37,8 @@ Dashboard
    .        serving static web content)
    .
    |--js (Angular controllers)
+   .  |--controllers
+   .         |--main.js (Angular controllers for index page)
    .
    .
    |--server (nodejs back-end modules like rabbit,redis connections,etc)
@@ -50,6 +52,7 @@ Dashboard
         |--rabbit.js (connects to rabbit queue and passes messages to cache)    
         |--utils.js (utilities)
    |--views (static HTML files)
+   .   |--main.html (main page HTML file)
    |--bower.json (front-end packages definition)
    |--gulpfile.js (building system instructions)
    |--index.html (main HTML page)
@@ -107,7 +110,7 @@ available on the browser at *localhost:3000*.
   simplified and basic distribution of Linux.
  
  ### Node Start
- To start the server, you first need to install all node depencies with
+ To start the server, you first need to install all node dependencies with
   ```
   npm install 
  ```
@@ -117,6 +120,20 @@ available on the browser at *localhost:3000*.
   node server.js
  ```
 and the node app will start listening on *localhost:8080* so the web page is available at that URL.
+Alternatively, you can run the node app on a Docker container with
+ ```
+ docker run -d --name node -v "path/to/server.js:/server.js" node:alpine node /server.js 
+ ```
+ and can still be accessed on *localhost:8080*.
+### Notes
+* Once started, the dashboard has some predefined test values inserted (chart data, lamps info, streets info)
+that are present only to show how the final values will be presented. Those values will be automatically removed 
+by the app once real values are processed from the Rabbit queue on which it listens. Some data may take a while to be 
+inserted. For example the global consumption weekly chart will be completely updated after a week because values are processed 
+based on their timestamp. Default values can be removed in the file *./js/controllers/main.js* which controls the 
+main dashboard page.
+
+* Dashboard has been built from an open-source template [CoreUI](http://coreui.io/).
 
 
 ## Authors                                                                                          
