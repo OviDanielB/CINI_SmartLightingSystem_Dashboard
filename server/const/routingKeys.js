@@ -1,7 +1,3 @@
-/**
- * Created by ovidiudanielbarba on 27/04/2017.
- */
-
 
 /**
  * defines topic routing keys for

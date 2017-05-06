@@ -1,5 +1,6 @@
 /**
- * Created by ovidiudanielbarba on 27/04/2017.
+ * Configuration file for REDIS
+ * and RABBITMQ connection parameters
  */
 
 

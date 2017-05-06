@@ -1,5 +1,7 @@
 /**
- * Created by ovidiudanielbarba on 28/04/2017.
+ * Module that interacts with a RabbitMQ queue
+ * and consumes on it, passing parsed messages to
+ * the cache module
  */
 
 var amqp = require('amqplib/callback_api');

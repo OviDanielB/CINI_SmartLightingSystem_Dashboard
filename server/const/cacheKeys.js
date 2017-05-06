@@ -1,6 +1,3 @@
-/**
- * Created by ovidiudanielbarba on 27/04/2017.
- */
 
 /**
  * Keys used in Redis putting and getting to

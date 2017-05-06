@@ -13,21 +13,9 @@ module.exports = {
         lampsCount.total = c;
         lampsCount.working = lampsCount.total - lampsCount.anomalies;
     },
-    incrementTotalLamps: function () {
-        lampsCount.total += 1;
-    },
     setAnomalyLampsCount: function (c) {
         lampsCount.anomalies = c;
 
-    },
-    incrementAnomalyLamps: function () {
-        lampsCount.anomalies += 1;
-    },
-    setWorkingLamps: function (c) {
-        lampsCount.working = c;
-    },
-    incrementWorkingLamps: function () {
-        lampsCount.working += 1;
     },
     lampAnomalies: function () {
         return lampAnomalies;
@@ -46,32 +34,18 @@ module.exports = {
     },
     updateStreetStat: function (newValue) {
         streetStat = newValue;
-        //streetCount.total = streetStat.statHour.length;
-        //console.log("UPDATE " + streetCount);
     },
     finalLampList: function () {
         return finalLampList;
     },
-    emptyLampList: function () {
-        finalLampList = [];
-    },
     setLampList: function (list) {
         finalLampList = list;
-    },
-    pushLampList: function (item) {
-        finalLampList.push(item);
     },
     finalStreetList: function () {
         return finalStreetList;
     },
-    emptyStreetList: function () {
-        finalStreetList = [];
-    },
     setStreetList: function (list) {
         finalStreetList = list;
-    },
-    pushStreetList: function (item) {
-        finalStreetList.push(item);
     },
     streetCount: function () {
         return streetCount;
@@ -80,10 +54,6 @@ module.exports = {
         streetCount.total = c;
         console.log("SET " + streetCount.total);
     },
-    incrementTotalStreets: function () {
-        streetCount.total += 1;
-        console.log("INCREMENT " + streetCount.total);
-    },
     ranking: function () {
         return ranking;
     },
@@ -91,6 +61,7 @@ module.exports = {
         ranking = list;
     }
 };
+
 
 var streetCount = {
     total: 0

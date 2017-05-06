@@ -1,7 +1,6 @@
 
 
     // set up ========================
-
     var express  = require('express');
     var app      = express();                               // create app with express
     var morgan = require('morgan');                         // log requests to the console (express4)
@@ -29,7 +28,6 @@
 
 
     // configuration =================
-
     app.use(express.static(__dirname + "/dist"));                   // set the static files location /dist for users
     app.use(morgan('dev'));                                         // log every request to the console
     app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
@@ -44,19 +42,19 @@
      * etc. Response values are taken from cache module
      * and sent in json format
      */
-    app.get("/api/lamps", function(req,res){ res.json(cache.getAnomalyLamps()) ;});
-    app.get("/api/ranking", function (req,res) { res.json(cache.getRanking()); });
-    app.get("/api/totalLamps",function (req,res) { res.json(cache.getTotalLampsCount()); });
-    app.get("/api/statistics/lamps" ,function (req,res) { res.json(cache.getLampStat()); });
-    app.get("/api/statistics/streets" ,function (req,res) { res.json(cache.getStreetStat()); });
-    app.get('/api/workingLamps',function(req,res){ res.json(cache.getWorkingLampsCount()); });
-    app.get('/api/anomalyLamps',function(req,res){ res.json(cache.getAnomalyLampsCount()); });
-    app.get('/api/totalStreets',function(req,res){ res.json(cache.getTotalStreetsCount()); });
-    app.get('/api/globalStatMin',function (req,res) { res.json(cache.getGlobalMinStat()); });
-    app.get('/api/globalStatHour',function (req,res) { res.json(cache.getGlobalHourStat()); });
-    app.get('/api/globalStatDay',function (req,res) { res.json(cache.getGlobalDailyStat()); });
-    app.get('/api/stat/lamps',function (req,res) { res.json(cache.getLampStat()); });
-    app.get('/api/stat/streets',function (req, res) { res.json(cache.getStreetStat()); });
+    app.get("/api/lamps",              function (req,res) { res.json( cache.getAnomalyLamps());       });
+    app.get("/api/ranking",            function (req,res) { res.json( cache.getRanking());            });
+    app.get("/api/totalLamps",         function (req,res) { res.json( cache.getTotalLampsCount());    });
+    app.get("/api/statistics/lamps",   function (req,res) { res.json( cache.getLampStat());           });
+    app.get("/api/statistics/streets", function (req,res) { res.json( cache.getStreetStat());         });
+    app.get('/api/workingLamps',       function (req,res) { res.json( cache.getWorkingLampsCount());  });
+    app.get('/api/anomalyLamps',       function (req,res) { res.json( cache.getAnomalyLampsCount());  });
+    app.get('/api/totalStreets',       function (req,res) { res.json( cache.getTotalStreetsCount());  });
+    app.get('/api/globalStatMin',      function (req,res) { res.json( cache.getGlobalMinStat());      });
+    app.get('/api/globalStatHour',     function (req,res) { res.json( cache.getGlobalHourStat());     });
+    app.get('/api/globalStatDay',      function (req,res) { res.json( cache.getGlobalDailyStat());    });
+    app.get('/api/stat/lamps',         function (req,res) { res.json( cache.getLampStat());           });
+    app.get('/api/stat/streets',       function (req,res) { res.json( cache.getStreetStat());         });
 
     /**
      * start app on port 8080

@@ -1,7 +1,3 @@
-/**
- * Created by ovidiudanielbarba on 04/05/2017.
- */
-
 
 /**
  * Test data to show on dashboard.
@@ -21,6 +17,8 @@ var globalStatDataHours = [100,120,130,140,150,160,170,180,190,200,100,120,130,1
 
 var globalStatLabelsDays = ["M","T","W","T","F","S","S"];
 var globalStatDataDays = [180,190,200,100,120,130,140];
+
+
 
 module.exports = {
     update: updateGlobalConsumption,

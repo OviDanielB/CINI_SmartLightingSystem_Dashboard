@@ -1,5 +1,13 @@
 /**
- * Created by ovidiudanielbarba on 27/04/2017.
+ * Module that interacts with Redis server
+ * (located on host:port specified in the config file)
+ * and inserts json messages parsed coming from
+ * HELIOS system about lamps and street info;
+ * the module also updates (with periodic cron jobs)
+ * and keeps in local memory the latest updated values
+ * taken from Redis and responds to queries like lamp
+ * consumption statistics, streets statistics, global ones,
+ * anomalies from street lamps,etc
  */
 
 var redis = require('redis');
@@ -18,6 +26,11 @@ var globalstat = require('./globalStat');
 var db = redis.createClient(config.REDIS_PORT,config.REDIS_HOST);
 
 
+/**
+ * makes available functions for
+ * querying recent lamp and streets
+ * information
+ */
 module.exports = {
     put: putInCache,
     getLampStat: function () {
